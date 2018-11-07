@@ -8,7 +8,14 @@ import { Welcome } from '../pages/welcome/welcome';
 import { Login } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 //Autenticação
-//import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ALTERAÇÃO 01 PASSO 6°
+// Importações para funcionamento do Firebase e da Autenticação
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+// Configurações do FIREBASE
+import { config } from '../config';
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM DA ALTERAÇÃO 01
+
 //Login
 
 
@@ -20,6 +27,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SignaturePadModule } from 'angular2-signaturepad';
+import { AuthProvider } from '../providers/auth/auth';
 
 
 @NgModule({
@@ -35,7 +43,14 @@ import { SignaturePadModule } from 'angular2-signaturepad';
   ],
   imports: [
     BrowserModule, HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ALTERAÇÃO 03 PASSO 6°
+    // Configurações do Firebase
+    AngularFireModule.initializeApp(config),
+    // Configuração do serviço de autenticação do firebase
+    AngularFireAuthModule,
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM DA ALTERAÇÃO 03
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -51,7 +66,8 @@ import { SignaturePadModule } from 'angular2-signaturepad';
   providers: [
     StatusBar,
     SplashScreen,//AuthServiceProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}//,AuthServiceProvider
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider
   ]
 })
 export class AppModule {}

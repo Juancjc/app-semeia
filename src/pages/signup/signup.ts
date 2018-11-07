@@ -1,45 +1,68 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+// Nesse import adicionamos o AlertController que será usado para apresentar a mensagem do nosso aplicativo
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+
+// Importação do nosso modelo de usuário
+import { User } from '../../models/user';
+
+// Importação do nosso serviço de autenticação
+import { AuthProvider } from '../../providers/auth/auth';
+
+// Importação da página que o usuário será redirecionado após o login
 import { TabsPage } from '../tabs/tabs';
-import { Login } from '../login/login';
-//import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
-/**
- * Generated class for the SignupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
-//@IonicPage()
+@IonicPage()
 @Component({
   selector: 'page-signup',
   templateUrl: 'signup.html',
 })
 export class SignupPage {
-  responseData : any;
-  userData = {"username": "","password": "", "name": "","email": ""};
 
-  constructor(public navCtrl: NavController, /*public authService:AuthServiceProvider */) {
+  // Definindo o nosso atributo usuário do tipo User
+  public user = {} as User;
+
+  // Aqui no contrutor vamos adicionar o AuthProvider e o AlertController
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private auth: AuthProvider, private alertCtrl: AlertController
+  ) { }
+
+
+  // Método para exibir as nossas mensagens de erro.
+  alert(title, message) {
+    let al = this.alertCtrl.create({
+      title: title,
+      subTitle: message,
+      buttons: ['Fechar']
+    });
+    al.present();
   }
 
-  signup(){
-      /*this.authService.postData(this.userData,'signup').then((result) => {
-      this.responseData = result;
-      if(this.responseData.userData){
-      console.log(this.responseData);
-      localStorage.setItem('userData', JSON.stringify(this.responseData));
-      this.navCtrl.push(TabsPage);
+  async signup(user: User) {
+
+    // Valida se foi informado email e password
+    if(user.email == "" || user.password == "")
+    {  
+      this.alert('Erro', 'É necessário informar o email e senha');
+    } else {
+      try {
+
+        // Chama o método para cadastrar usuárioz
+        const result = await this.auth.register(user);
+        if (result) {
+          // Se ocorrer tudo bem redireciona para a página tabs
+          this.navCtrl.setRoot(TabsPage);
+        }
+      } catch (e) {
+        this.alert('Erro ao cadastrar', e.message);
       }
-      else{ console.log("User already exists"); }
-    }, (err) => {
-      // Error log
-    });*/
-
+    }
   }
 
-  login(){
-    //Login page link
-    this.navCtrl.push(Login);
+  ionViewDidLoad() {
+    // Toda vez que um usuário acessar a página de login ele será deslogado
+    this.auth.logout();
   }
+
 }
