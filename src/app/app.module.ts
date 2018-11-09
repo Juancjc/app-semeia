@@ -15,7 +15,9 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 // Configurações do FIREBASE
 import { config } from '../config';
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM DA ALTERAÇÃO 01
-
+//geo
+import { Geolocation } from '@ionic-native/geolocation'; 
+//geo
 //Login
 
 
@@ -67,7 +69,7 @@ import { AuthProvider } from '../providers/auth/auth';
     StatusBar,
     SplashScreen,//AuthServiceProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,Geolocation
   ]
 })
 export class AppModule {}
