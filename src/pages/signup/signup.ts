@@ -11,7 +11,7 @@ import { AuthProvider } from '../../providers/auth/auth';
 
 // Importação da página que o usuário será redirecionado após o login
 import { TabsPage } from '../tabs/tabs';
-
+import { Validators, FormBuilder } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -25,7 +25,7 @@ export class SignupPage {
 
   // Aqui no contrutor vamos adicionar o AuthProvider e o AlertController
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private auth: AuthProvider, private alertCtrl: AlertController
+              private auth: AuthProvider, private alertCtrl: AlertController,private formBuilder: FormBuilder
   ) { }
 
 
@@ -48,7 +48,8 @@ export class SignupPage {
     } else {
       try {
 
-        // Chama o método para cadastrar usuárioz
+        // Chama o método para cadastrar usuários
+
         const result = await this.auth.register(user);
         if (result) {
           // Se ocorrer tudo bem redireciona para a página tabs

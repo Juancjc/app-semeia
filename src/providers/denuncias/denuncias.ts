@@ -1,0 +1,82 @@
+import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/map';
+
+// Importações necessárias
+import { AuthProvider } from '../../providers/auth/auth'
+import { Denuncias } from '../../models/denuncias'
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+@Injectable()
+export class DenunciasProvider {
+
+  // Definição do caminho onde será salvo os dados
+  // dos usuários
+  private caminho: string = '';
+
+  // Coleção de tarefas
+  private denunciasColllection: AngularFirestoreCollection<Denuncias>;
+
+  // Lista de tarefas
+  tasks: Observable<Denuncias[]>;
+
+  // Parametros que vamos injetar no construtor
+  constructor(private afs: AngularFirestore, private auth: AuthProvider) {
+    // Verificando ser o usuário está logado para criarmos o caminho
+    this.auth.user.subscribe(auth => {
+      
+      // Verifica se está logado e adiciona o caminho, usaremos o email
+      // como caminho para ficar mais fácil identificar as tarefas de cada usuário
+      if(auth != null)
+      {
+        this.caminho = '/' + auth.email;
+        this.denunciasColllection = afs.collection<Denuncias>(this.caminho, ref => {
+          return ref;
+        });
+
+      } else {
+        this.caminho = '';
+      }
+    });
+    //this.productsRef = this.afs.collection<Product>('productos');
+
+
+  }
+
+  // Este método será retorna um lista de tarefas pode ser
+  // as finalizadas ou as que ainda não foram finalizadas
+  // para filtrar passamos o parametro finalizada
+
+  pegarDenuncias(app: boolean) {
+    return this.afs
+      .collection<Denuncias>(this.caminho, ref => {
+        return ref.where('app', '==', app);
+      })
+      .snapshotChanges()
+      .map(actions => {
+        return actions.map(a => {
+          //Get document data
+          const data = a.payload.doc.data() as Denuncias;
+          //Get document id
+          const id = a.payload.doc.id;
+          //Use spread operator to add the id to the document data
+          return { id,...data };
+        })
+      });
+  } 
+
+  // Método usado para adicionar uma tarefa
+  adicionar(denuncia: Denuncias) {
+    this.denunciasColllection.add(denuncia);
+  }
+
+  // Método usado para atualizar uma tarefa
+  atualizar (id: string, task:Denuncias) {
+    this.denunciasColllection.doc(id).update(task);
+  }
+
+  // Método usado para excluir uma tarefa
+  excluir (id: string) {
+    this.denunciasColllection.doc(id).delete();
+  }
+
+}

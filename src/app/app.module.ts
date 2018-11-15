@@ -8,21 +8,23 @@ import { Welcome } from '../pages/welcome/welcome';
 import { Login } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 //Autenticação
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ALTERAÇÃO 01 PASSO 6°
 // Importações para funcionamento do Firebase e da Autenticação
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-// Configurações do FIREBASE
+
+// Para usar o serviço de banco de dados é necessário importar o AngularFirestoreModule
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+
+
 import { config } from '../config';
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM DA ALTERAÇÃO 01
+
 //geo
 import { Geolocation } from '@ionic-native/geolocation'; 
 //geo
 //Login
 
-
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { DenunciarPage } from '../pages/denunciar/denunciar';
+import { ListarDenunciasPage } from '../pages/listar-denuncias/listar-denuncias';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -30,14 +32,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { AuthProvider } from '../providers/auth/auth';
-
+import { DenunciasProvider } from '../providers/denuncias/denuncias';
+import { AppUsersProvider } from '../providers/app-users/app-users';
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
+    DenunciarPage,
+    ListarDenunciasPage,
     Welcome,
     Login,
     SignupPage,
@@ -46,20 +49,20 @@ import { AuthProvider } from '../providers/auth/auth';
   imports: [
     BrowserModule, HttpModule,
     IonicModule.forRoot(MyApp),
-    
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ALTERAÇÃO 03 PASSO 6°
+   
     // Configurações do Firebase
     AngularFireModule.initializeApp(config),
     // Configuração do serviço de autenticação do firebase
     AngularFireAuthModule,
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM DA ALTERAÇÃO 03
+    // Configuração do serviço de banco de dados do firebase
+    AngularFirestoreModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
+    DenunciarPage,
+    ListarDenunciasPage,
     Welcome,
     Login,
     SignupPage,
@@ -69,7 +72,9 @@ import { AuthProvider } from '../providers/auth/auth';
     StatusBar,
     SplashScreen,//AuthServiceProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider,Geolocation
+    AuthProvider,Geolocation,
+    DenunciasProvider,
+    AppUsersProvider
   ]
 })
 export class AppModule {}

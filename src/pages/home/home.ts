@@ -2,14 +2,18 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 declare var google: any;
-
+// Serviço de autenticação que será usado para fazer o logout
+import { AuthProvider } from '../../providers/auth/auth'
+import { DenunciarPage } from '../denunciar/denunciar';
+// Página de login, para onde o usuário que fizer logout sera direcionado
+import { Welcome } from '../welcome/welcome';
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
  
   markers = [];
-  constructor(public navCtrl: NavController, public platform: Platform, private geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public platform: Platform, private geolocation: Geolocation,private auth: AuthProvider) {
     platform.ready().then(() => {
       this.initMap();
     });
@@ -56,6 +60,13 @@ deleteMarkers() {
   this.clearMarkers();
   this.markers = [];
 }
-
+adicionar () {
+  this.navCtrl.push(DenunciarPage);
+}
+  sair() {
+    this.auth.logout().then(value => {
+      this.navCtrl.setRoot(Welcome);
+     });
+  }
 
 }
