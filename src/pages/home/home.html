@@ -15,10 +15,37 @@
   </ion-navbar>
 </ion-header>
 
-  
-  <ion-content padding>
-
-          <div #map id="map"></div>
 
 
-  </ion-content>
+<ion-content padding>
+    <div #map id="map"></div>
+<ion-card *ngFor="let appUser of appUsers | async">
+<ion-card-title>
+     BEM-VINDO
+</ion-card-title>
+
+
+
+  <ion-item>
+    <ion-icon name="football" item-start large></ion-icon>
+    <h2>{{ appUser.nomeDenunciante }}</h2>
+    <p></p>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="wine" item-start large ></ion-icon>
+    <h2>{{ appUser.email }}</h2>
+    <p></p>
+  </ion-item>
+
+  <ion-item>
+    <span item-start>18 min</span>
+    <span item-start>(2.6 mi)</span>
+    <button ion-button icon-start clear item-end>
+      <ion-icon name="navigate"></ion-icon>
+      Start
+    </button>
+  </ion-item>
+
+</ion-card>
+</ion-content>

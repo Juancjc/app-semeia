@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 
 // Importações necessárias
 import { AuthProvider } from '../../providers/auth/auth'
-import { User } from '../../models/user'
+import { AppUsers } from '../../models/app-users'
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 @Injectable()
@@ -14,10 +14,10 @@ export class AppUsersProvider {
   private caminho: string = '';
 
   // Coleção de tarefas
-  private usersColllection: AngularFirestoreCollection<User>;
+  private usersColllection: AngularFirestoreCollection<AppUsers>;
 
   // Lista de tarefas
-  tasks: Observable<User[]>;
+  tasks: Observable<AppUsers[]>;
 
   // Parametros que vamos injetar no construtor
   constructor(private afs: AngularFirestore, private auth: AuthProvider) {
@@ -28,8 +28,8 @@ export class AppUsersProvider {
       // como caminho para ficar mais fácil identificar as tarefas de cada usuário
       if(auth != null)
       {
-        this.caminho = '/user/' + auth.email;
-        this.usersColllection = afs.collection<User>(this.caminho, ref => {
+        this.caminho = '/dados-' + auth.email;
+        this.usersColllection = afs.collection<AppUsers>(this.caminho, ref => {
           return ref;
         });
 
@@ -48,14 +48,14 @@ export class AppUsersProvider {
 
   pegarUser(app: boolean) {
     return this.afs
-      .collection<User>(this.caminho, ref => {
+      .collection<AppUsers>(this.caminho, ref => {
         return ref.where('app', '==', app);
       })
       .snapshotChanges()
       .map(actions => {
         return actions.map(a => {
           //Get document data
-          const data = a.payload.doc.data() as User;
+          const data = a.payload.doc.data() as AppUsers;
           //Get document id
           const id = a.payload.doc.id;
           //Use spread operator to add the id to the document data
@@ -65,12 +65,12 @@ export class AppUsersProvider {
   } 
 
   // Método usado para adicionar uma tarefa
-  adicionar(user: User) {
+  adicionar(user: AppUsers) {
     this.usersColllection.add(user);
   }
 
   // Método usado para atualizar uma tarefa
-  atualizar (id: string, task:User) {
+  atualizar (id: string, task:AppUsers) {
     this.usersColllection.doc(id).update(task);
   }
 

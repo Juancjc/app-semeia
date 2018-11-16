@@ -19,7 +19,34 @@
     </ion-card-header>
   
     <ion-card-content>
-      
+
+      <ion-item>
+        <ion-label floating>Nome Completo</ion-label>
+        <ion-input type="text" [(ngModel)]="user.nomeDenunciante"></ion-input>
+      </ion-item>
+
+
+        <ion-item>
+          <ion-label floating>Rua</ion-label>
+          <ion-input type="text" [(ngModel)]="user.ruaDenunciante"></ion-input>
+        </ion-item>
+
+   
+          <ion-item>
+            <ion-label floating>Bairro</ion-label>
+            <ion-input type="text" [(ngModel)]="user.bairroDenunciante"></ion-input>
+          </ion-item>
+
+            <ion-item>
+              <ion-label floating>Numero casa</ion-label>
+              <ion-input type="text" [(ngModel)]="user.numeroCasaDenunciante"></ion-input>
+            </ion-item>
+
+              <ion-item>
+                <ion-label floating>Telefone</ion-label>
+                <ion-input type="text" [(ngModel)]="user.telefoneDenunciante"></ion-input>
+              </ion-item>
+
       <ion-item>
         <ion-label floating>E-mail</ion-label>
         <ion-input type="email" [(ngModel)]="user.email" ></ion-input>

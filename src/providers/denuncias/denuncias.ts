@@ -28,7 +28,7 @@ export class DenunciasProvider {
       // como caminho para ficar mais fácil identificar as tarefas de cada usuário
       if(auth != null)
       {
-        this.caminho = '/' + auth.email;
+        this.caminho = '/denuncias-' + auth.email;
         this.denunciasColllection = afs.collection<Denuncias>(this.caminho, ref => {
           return ref;
         });

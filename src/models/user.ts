@@ -5,8 +5,9 @@ export interface User {
     email: string;
     password: string;
     nomeDenunciante: string;
-   // ruaDenunciante: string;
-   //bairroDenunciante: string;
-    //cepDenunciante: string;
+    ruaDenunciante: string;
+    bairroDenunciante: string;
+    numeroCasaDenunciante: string;
+    telefoneDenunciante: string;
     
 }

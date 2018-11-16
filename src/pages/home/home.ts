@@ -7,13 +7,22 @@ import { AuthProvider } from '../../providers/auth/auth'
 import { DenunciarPage } from '../denunciar/denunciar';
 // Página de login, para onde o usuário que fizer logout sera direcionado
 import { Welcome } from '../welcome/welcome';
+import { AppUsersProvider } from '../../providers/app-users/app-users';
+import { Observable } from 'rxjs/Observable';
+import { AppUsers } from '../../models/app-users';
+
 @Component({selector: 'page-home', templateUrl: 'home.html'})
+
 export class HomePage {
   @ViewChild('map') mapElement: ElementRef;
+  appUsers: Observable<AppUsers[]>;
   map: any;
  
   markers = [];
-  constructor(public navCtrl: NavController, public platform: Platform, private geolocation: Geolocation,private auth: AuthProvider) {
+  constructor(public navCtrl: NavController, 
+    public platform: Platform, private geolocation: Geolocation,
+    private auth: AuthProvider,
+    private appUserProvider:AppUsersProvider) {
     platform.ready().then(() => {
       this.initMap();
     });
@@ -67,6 +76,10 @@ adicionar () {
     this.auth.logout().then(value => {
       this.navCtrl.setRoot(Welcome);
      });
+  }
+  ionViewDidLoad() {
+    this.appUsers = this.appUserProvider.pegarUser(true);
+    
   }
 
 }
