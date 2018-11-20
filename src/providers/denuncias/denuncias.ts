@@ -6,6 +6,7 @@ import { AuthProvider } from '../../providers/auth/auth'
 import { Denuncias } from '../../models/denuncias'
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import firebase from 'firebase';
 @Injectable()
 export class DenunciasProvider {
 
@@ -66,9 +67,25 @@ export class DenunciasProvider {
 
   // Método usado para adicionar uma tarefa
   adicionar(denuncia: Denuncias) {
+    //this.getFoto(denuncia.fotoDenuncia);
+    
+    //denuncia.fotoDenuncia=this.getFoto(url);
     this.denunciasColllection.add(denuncia);
   }
-
+  getFoto(image: string){
+    let imgUrl: string;
+    try{
+      firebase.storage().ref().child(image).getDownloadURL().then(function(url){
+        console.log("log1: " + url);
+        imgUrl=''+url+'';
+        return imgUrl;
+      });
+    }
+    catch(e){
+      console.log(e);
+      return 'error';
+    }   
+}
   // Método usado para atualizar uma tarefa
   atualizar (id: string, task:Denuncias) {
     this.denunciasColllection.doc(id).update(task);

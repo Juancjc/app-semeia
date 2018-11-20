@@ -9,6 +9,7 @@ import { Login } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 //Autenticação
 // Importações para funcionamento do Firebase e da Autenticação
+//import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
@@ -21,6 +22,9 @@ import { config } from '../config';
 //geo
 import { Geolocation } from '@ionic-native/geolocation'; 
 //geo
+//Photo
+import { Camera } from '@ionic-native/camera';
+//Photo
 //Login
 
 import { DenunciarPage } from '../pages/denunciar/denunciar';
@@ -74,7 +78,7 @@ import { AppUsersProvider } from '../providers/app-users/app-users';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,Geolocation,
     DenunciasProvider,
-    AppUsersProvider
+    AppUsersProvider,Camera
   ]
 })
 export class AppModule {}

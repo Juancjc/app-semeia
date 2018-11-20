@@ -1,10 +1,12 @@
 
 export interface Denuncias {
-   id?: string;
+   id: number;
    app: boolean;
    descricaoBoa: string;
    poluitions_id: number;
-   status_id: number;
+   status: string;
+   fotoDenuncia: string;
+   fotoDenunciaReferencia: string;
    nomeDenunciado: string;
    ruaDenunciado: string;
    bairroDenunciado: string;

@@ -16,11 +16,24 @@
       <ion-label floating>Nome Denunciado</ion-label>
       <ion-input type="text" [(ngModel)]="denuncia.nomeDenunciado" maxlength="100"></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label floating>Descreva o Ocorrido</ion-label>
-      <ion-textarea type="text" [(ngModel)]="denuncia.descricaoBoa" maxlength="400"></ion-textarea>
-    </ion-item>      
-    <ion-input type="number" [(ngModel)]="denuncia.status_id" value='1' hidden></ion-input>
+        <ion-label floating>Descreva o Ocorrido</ion-label>
+        <ion-textarea type="text" [(ngModel)]="denuncia.descricaoBoa" maxlength="400"></ion-textarea>
+    </ion-item>  
+    <ion-item>
+        <div style="display:flex; flex-direction:column;justify-content:center">
+
+
+            <button ion-button round color="" (click)="capture()"><ion-icon name="md-camera">
+
+            </ion-icon> Tire a foto!</button>
+        
+            <img [src]="captureDataUrl"  *ngIf="captureDataUrl"/>
+            
+          </div>
+    </ion-item>   
+         
     <button ion-button color="secondary" block (click)="adicionarDenuncia(denuncia)">
         Adicionar
     </button>

@@ -16,10 +16,12 @@
 <ion-content padding>
 
 <ion-card *ngFor="let denuncia of denuncias | async">
-  <img src="assets/imgs/nin-live.png"/>
+
+    <img [src]="denuncia.fotoDenuncia"/>
+
   <ion-card-content>
     <ion-card-title>
-   {{ denuncia.nomeDenunciado }}-{{ denuncia.status_id }}
+   {{ denuncia.nomeDenunciado }}-{{ denuncia.status}}
       </ion-card-title>
     <p>
         {{ denuncia.descricaoBoa }}
