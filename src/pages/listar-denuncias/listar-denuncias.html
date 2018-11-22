@@ -21,10 +21,10 @@
 
   <ion-card-content>
     <ion-card-title>
-   {{ denuncia.nomeDenunciado }}-{{ denuncia.status}}
+      <ion-icon name="md-arrow-dropright" item-start ></ion-icon><a>Tipo:</a> {{ denuncia.tipoDenuncia }}    <ion-icon name="md-arrow-dropright" item-start ></ion-icon><a>Situação:</a> {{ denuncia.status}}
       </ion-card-title>
     <p>
-        {{ denuncia.descricaoBoa }}
+      <ion-icon name="md-calendar" item-start ></ion-icon><a>Data Envio:</a> {{ denuncia.dataEnvio }}
     </p>
   </ion-card-content>
 </ion-card>

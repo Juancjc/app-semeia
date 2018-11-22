@@ -27968,6 +27968,10 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
+page-denunciar #map2 {
+  height: 50%;
+}
+
 page-home #map {
   height: 50%;
 }

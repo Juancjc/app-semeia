@@ -8,19 +8,69 @@
 
 
 <ion-content padding>
+  <div #map2 id="map2"></div>
+
   <ion-card>
 
   <ion-card-content>
     
-    <ion-item>
-      <ion-label floating>Nome Denunciado</ion-label>
+      <ion-item>
+          <ion-label floating>Tipo Denuncia</ion-label>
+          <ion-select okText="Ok" cancelText="Cancelar" [(ngModel)]="denuncia.tipoDenuncia">
+               <ion-option value="Anônima"><strong>Anônima</strong></ion-option>
+              <ion-option value="Identificada"><strong>Identificada</strong></ion-option>
+            </ion-select>
+        </ion-item>
+
+     <ion-item>
+        <ion-label floating>Tipo Poluição</ion-label>
+        <ion-select okText="Ok" cancelText="Cancelar" [(ngModel)]="denuncia.poluitions">
+             <ion-option value="Queimada"><strong>Queimada</strong></ion-option>
+             <ion-option value="Poluição Hídrica"><strong>Poluição Hídrica</strong></ion-option>
+             <ion-option value="Poluição Sonora"><strong>Poluição Sonora</strong></ion-option>
+             <ion-option value="Outros"><strong>Outros</strong></ion-option>
+          </ion-select>
+      </ion-item> 
+
+      <ion-item>
+          <ion-label floating>Descreva o Ocorrido</ion-label>
+          <ion-textarea type="text" [(ngModel)]="denuncia.descricaoBoa" maxlength="400"></ion-textarea>
+      </ion-item> 
+
+      <br>
+      <ion-item><h1>Informações do Denunciado(Se possível)</h1>
+          <h2>No Mapa acima marque aonde foi visto a Poluição</h2></ion-item>
+
+      <ion-item> 
+      <ion-label floating>Nome </ion-label>
       <ion-input type="text" [(ngModel)]="denuncia.nomeDenunciado" maxlength="100"></ion-input>
     </ion-item>
 
-    <ion-item>
-        <ion-label floating>Descreva o Ocorrido</ion-label>
-        <ion-textarea type="text" [(ngModel)]="denuncia.descricaoBoa" maxlength="400"></ion-textarea>
-    </ion-item>  
+      <ion-item>
+          <ion-label floating>Rua </ion-label>
+          <ion-input type="text" [(ngModel)]="denuncia.ruaDenunciado" maxlength="100"></ion-input>
+     </ion-item>
+
+        <ion-item>
+            <ion-label floating>Bairro </ion-label>
+            <ion-input type="text" [(ngModel)]="denuncia.bairroDenunciado" maxlength="100"></ion-input>
+          </ion-item>
+
+          <ion-item>
+              <ion-label floating>Número da casa/local</ion-label>
+              <ion-input type="tel" [(ngModel)]="denuncia.numeroCasaDenunciado" maxlength="100"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Telefone</ion-label>
+            <ion-input type="tel" [(ngModel)]="denuncia.telefoneDenunciado" maxlength="14"></ion-input>
+      </ion-item>
+
+  
+
+
+
+
     <ion-item>
         <div style="display:flex; flex-direction:column;justify-content:center">
 
@@ -33,7 +83,7 @@
             
           </div>
     </ion-item>   
-         
+             
     <button ion-button color="secondary" block (click)="adicionarDenuncia(denuncia)">
         Adicionar
     </button>

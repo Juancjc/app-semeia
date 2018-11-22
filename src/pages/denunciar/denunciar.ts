@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import firebase from 'firebase';
 // Importações necessárias
 
@@ -13,15 +13,21 @@ import { Denuncias} from '../../models/denuncias'
 // ao finalizar a edição de uma tarefa
 import { TabsPage } from '../tabs/tabs';
 import { ListarDenunciasPage } from '../listar-denuncias/listar-denuncias';
-
+//geo
+import { Geolocation } from '@ionic-native/geolocation';
+declare var google: any;
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { AuthProvider } from '../../providers/auth/auth';
 @IonicPage()
 @Component({
   selector: 'page-denunciar',
   templateUrl: 'denunciar.html',
 })
 export class DenunciarPage {
-
+  map2: any;
+  longitudeFinal: any;
+  latitudeFinal: any;
+  @ViewChild('map2') mapElement: ElementRef;
   captureDataUrl: string;
   siteUrl: string;
   // Definição do atributo tarefa que será usado para o cadastro
@@ -29,11 +35,48 @@ export class DenunciarPage {
 
   // Adicionando o serviço de tarefa no construtor
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private denunciasProvider:DenunciasProvider, public alertCtrl: AlertController,
-              private camera: Camera) {
+              private denunciasProvider:DenunciasProvider, 
+              public alertCtrl: AlertController, 
+              public platform: Platform,
+              private geolocation: Geolocation,
+              private camera: Camera,
+              private auth: AuthProvider) {
                 this.alertCtrl = alertCtrl;
+                platform.ready().then(() => {
+                  this.iniciarMapa();
+                });
   }
+  iniciarMapa() {
+    this.geolocation.getCurrentPosition().then((position)=> {
+      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); // pegando localização atual
 
+      let mapOptions = { //opções do mapa
+        center: latLng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        disabledZoomDoubleClick: true,
+        fullscreenControl: true
+      }
+      this.map2 = new google.maps.Map(document.getElementById('map2'), mapOptions); //adicionando mapa com as opçoes
+
+      let marker = new google.maps.Marker({ //Adicionando marcador
+      map: this.map2,
+      animation: google.maps.Animation.DROP,
+      position: latLng,
+      draggable: true,
+
+    });
+
+    google.maps.event.addListener(marker, 'dragend', () => {
+      this.latitudeFinal= marker.position.lat();
+      this.longitudeFinal = marker.position.lng();
+      console.log(this.latitudeFinal+''+''+this.longitudeFinal)
+    })
+
+    }, (error) => {
+      console.log(error);      
+    });      
+}
 
   capture() {
     const cameraOptions: CameraOptions = {
@@ -55,7 +98,7 @@ export class DenunciarPage {
       // Handle error
     });
   }
-
+/*
   upload() {
     let storageRef = firebase.storage().ref();
 
@@ -68,7 +111,7 @@ export class DenunciarPage {
       this.showSuccesfulUploadAlert();
     });
 
-  }
+  } */
 
   showSuccesfulUploadAlert() {
     let alert = this.alertCtrl.create({
@@ -98,20 +141,36 @@ export class DenunciarPage {
       // imagesDenuncias/denuncia.id.jpg`
       
       var url = `imagesDenuncias/${denuncia.id}.jpg`;
-      let imgUrl: string;
-      denuncia.fotoDenunciaReferencia=url;
+
    //cria a url da imagem para download
       firebase.storage().ref().child(url).getDownloadURL().then(url => {
         console.log("log1: " + url);
-        //imgUrl=""+url+"";
+
           //denuncia.id=id;
+          var data = new Date();
+          var dia = data.getDate();
+          var diaReal;
+          if (dia < 10) {
+            diaReal = "0" + dia;
+        }else diaReal = dia;
+          var mes = data.getMonth() + 1;
+         var mesReal;
+          if(mes < 10) {
+             mesReal = "0" + mes;
+         }else mesReal = mes;
+         var ano = data.getFullYear();
+
+          denuncia.dataEnvio =  diaReal+"/"+mesReal+"/"+ano+"";          
+
+          denuncia.latitudeDenunciado = this.latitudeFinal;
+          denuncia.longitudeDenunciado = this.longitudeFinal;
           denuncia.status='Aberta';
           denuncia.fotoDenuncia=url;
           denuncia.app=true;
           //this.denunciasProvider.getFoto( denuncia.fotoDenuncia);
          this.denunciasProvider.adicionar(denuncia);
-         this.showSuccesfulUploadAlert(); 
-        
+         this.showSuccesfulUploadAlert();
+         console.log(denuncia.dataEnvio);
       });  
 
       

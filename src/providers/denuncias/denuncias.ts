@@ -67,10 +67,16 @@ export class DenunciasProvider {
 
   // Método usado para adicionar uma tarefa
   adicionar(denuncia: Denuncias) {
-    //this.getFoto(denuncia.fotoDenuncia);
-    
-    //denuncia.fotoDenuncia=this.getFoto(url);
-    this.denunciasColllection.add(denuncia);
+    this.auth.user.subscribe(auth => {
+
+      if(denuncia.tipoDenuncia == "Anônima" || denuncia.tipoDenuncia == ""){
+            denuncia.idUser="";
+        }else denuncia.idUser = auth.uid;    
+        
+        this.denunciasColllection.add(denuncia);
+   });
+
+
   }
   getFoto(image: string){
     let imgUrl: string;
